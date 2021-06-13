@@ -10,7 +10,7 @@ registration_data = df.to_dict(orient='records')
 
 def fillGender(driver, data):
     try:
-        if data['gender'] == 'M':
+        if data['gender'] == 'M' or data['gender'].lower() == 'male':
             Select(driver.find_element_by_id('ddlTitle')).select_by_index(1)
             Select(driver.find_element_by_id('ddlGender')).select_by_index(1)
 
@@ -78,8 +78,11 @@ def fillExperienceDetails(driver, data):
                 Select(driver.find_element_by_id('ddlOfficeCountry')).select_by_visible_text(data['country_office'])
             driver.find_element_by_id('txtNameOfOrganization').send_keys(data['organization'])
             driver.find_element_by_id('txtDesignation').send_keys(data['designation'])
-            driver.find_element_by_id('txtFromDate').send_keys(data['from_date'].strftime("%d/%m/%Y"))
-            driver.find_element_by_id('txtOfficeAdd1').send_keys(data['address_office'])
+            # driver.find_element_by_id('txtFromDate').send_keys(data['from_date'].strftime("%d/%m/%Y"))
+            address_lines = data['address_office'].split(',')
+            driver.find_element_by_id('txtOfficeAdd1').send_keys((address_lines[0]+address_lines[1]).strip())
+            driver.find_element_by_id('txtOfficeAdd2').send_keys(address_lines[2].strip())
+            driver.find_element_by_id('txtOfficeAdd3').send_keys(address_lines[-1].strip())
             driver.find_element_by_id('txtOfficeCity').send_keys(data['city_office'])
             driver.find_element_by_id('txtOfficePinCode').send_keys(data['pincode_office'])
             if data['phone']:

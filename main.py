@@ -1,11 +1,40 @@
+import os
+import time
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 
 df = pd.read_excel("./nism_registration.xlsx")
 df = df[df.to_be_registered=='Yes']
 registration_data = df.to_dict(orient='records')
+
+
+def uploadImage(driver, data, imgName, id):
+    try:
+        imagePath = os.getcwd()+'/'+data['firstName']+'/'+data['firstName']+imgName+'.jpeg'
+        print(imagePath)
+        if os.path.exists(imagePath):
+            driver.find_element_by_id(id).click()
+            driver.switch_to.frame(0);
+            driver.find_element_by_id('flpPhoto').send_keys(imagePath)
+            time.sleep(2)
+            driver.find_element_by_id('btnUpload').click()
+            s = driver.find_element_by_class_name('jcrop-holder').get_attribute('style')
+            w = int(s[s.index("width: ")+7:s.index("px;")])
+            h = int(s[s.index("height: ")+8:s.rindex("px;")])
+            action = ActionChains(driver)
+            action.click_and_hold(on_element = driver.find_element_by_class_name('jcrop-tracker'))
+            action.move_by_offset(w, h)
+            action.release()
+            action.perform()
+            driver.find_element_by_id('btnCrop').click()
+            time.sleep(3)
+            driver.find_element_by_id('btnSubmit').click()
+            time.sleep(4)
+    except:
+        pass
 
 
 def fillGender(driver, data):
@@ -49,6 +78,9 @@ def fillPersonalDetails(driver, data):
         driver.find_element_by_id('txtFatherName').send_keys(data['fatherName'])
         driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
         driver.find_element_by_id('txtPan').send_keys(data['pan'])
+        uploadImage(driver, data, 'PP', 'imgUserPhoto')
+        uploadImage(driver, data, 'PAN', 'imgPAN')
+        uploadImage(driver, data, 'AADHAAR', 'imgPOA')
         driver.find_element_by_id('txtConfirmPan').send_keys(data['pan'])
         driver.find_element_by_id('strAadhaarNumber').send_keys(data['aadhaar'])
     except:
@@ -92,6 +124,7 @@ def fillExperienceDetails(driver, data):
                 Select(driver.find_element_by_id('ddlOfficeState')).select_by_visible_text(data['state_office'])
     except:
         pass
+
 
 driver = webdriver.Chrome('./chromedriver')
 

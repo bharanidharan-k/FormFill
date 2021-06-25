@@ -2,7 +2,6 @@ import os
 import time
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 
@@ -13,8 +12,13 @@ registration_data = df.to_dict(orient='records')
 
 def uploadImage(driver, data, imgName, id):
     try:
-        imagePath = os.getcwd()+'/'+data['firstName']+'/'+data['firstName']+imgName+'.jpeg'
+        imagePath = os.getcwd()+'/'+data['firstName']+'/'+data['firstName']+imgName
         print(imagePath)
+        if os.path.exists(imagePath+'.jpeg'):
+            imagePath += '.jpeg'
+        else:
+            imagePath += '.jpg'
+
         if os.path.exists(imagePath):
             driver.find_element_by_id(id).click()
             driver.switch_to.frame(0);

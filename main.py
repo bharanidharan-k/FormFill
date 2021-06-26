@@ -86,10 +86,10 @@ def fillPersonalDetails(driver, data):
         driver.find_element_by_id('txtFatherName').send_keys(data['fatherName'])
         driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
         driver.find_element_by_id('txtPan').send_keys(data['pan'])
+        driver.find_element_by_id('txtConfirmPan').send_keys(data['pan'])
         uploadImage(driver, data, 'PP', 'imgUserPhoto')
         uploadImage(driver, data, 'PAN', 'imgPAN')
         uploadImage(driver, data, 'AADHAAR', 'imgPOA')
-        driver.find_element_by_id('txtConfirmPan').send_keys(data['pan'])
         driver.find_element_by_id('strAadhaarNumber').send_keys(data['aadhaar'])
     except:
         pass
@@ -99,8 +99,12 @@ def fillEducationDetails(driver, data):
     try:
         if data['education'].lower() == 'graduation':
             Select(driver.find_element_by_id('ddlQualification')).select_by_index(3)
-            if data['major'].lower() == 'commerce':
+            if 'commerce' in data['major'].lower():
                 Select(driver.find_element_by_id('ddlMajorSubject')).select_by_index(3)
+            elif 'engineer' in data['major'].lower() or 'engg' in data['major'].lower() or 'b.tech' in data['major'].lower() or 'b.e' in data['major'].lower():
+                Select(driver.find_element_by_id('ddlMajorSubject')).select_by_index(4)
+            elif 'bba' in data['major'].lower() or 'mba' in data['major'].lower():
+                Select(driver.find_element_by_id('ddlMajorSubject')).select_by_index(7)
             driver.find_element_by_id('txtGradInstitute').send_keys(data['university'])
             Select(driver.find_element_by_id('ddlGradYearofPassing')).select_by_visible_text(str(data['yop']))
             driver.find_element_by_id('txtGradPercenteage').send_keys(str(data['percentage']))

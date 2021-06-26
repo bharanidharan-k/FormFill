@@ -1,4 +1,4 @@
-import os
+import os, platform
 import time
 import pandas as pd
 from selenium import webdriver
@@ -12,12 +12,16 @@ registration_data = df.to_dict(orient='records')
 
 def uploadImage(driver, data, imgName, id):
     try:
-        imagePath = os.getcwd()+'/'+data['firstName']+'/'+data['firstName']+imgName
-        print(imagePath)
+        imagePath = os.getcwd()
+        if platform.system() == 'Windows':
+            imagePath += '\\' + data['firstName'].strip() + '-' + data['pan'] + '\\' + data['firstName'].strip() + imgName
+        else:
+            imagePath += '/' + data['firstName'].strip() + '-' + data['pan'] + '/' + data['firstName'].strip() + imgName
         if os.path.exists(imagePath+'.jpeg'):
             imagePath += '.jpeg'
         else:
             imagePath += '.jpg'
+        print(imagePath)
 
         if os.path.exists(imagePath):
             driver.find_element_by_id(id).click()

@@ -82,7 +82,6 @@ def fillPersonalDetails(driver, data):
         driver.find_element_by_id('txtConfirmPassword').send_keys(data['password'])
         fillGender(driver, data)
         driver.find_element_by_id('txtFirstName').send_keys(data['firstName'])
-        driver.find_element_by_id('txtLastName').send_keys(data['lastName'])
         driver.find_element_by_id('txtFatherName').send_keys(data['fatherName'])
         driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
         driver.find_element_by_id('txtPan').send_keys(data['pan'])
@@ -91,6 +90,7 @@ def fillPersonalDetails(driver, data):
         uploadImage(driver, data, 'PAN', 'imgPAN')
         uploadImage(driver, data, 'AADHAAR', 'imgPOA')
         driver.find_element_by_id('strAadhaarNumber').send_keys(data['aadhaar'])
+        driver.find_element_by_id('txtLastName').send_keys(data['lastName'])
     except:
         pass
 
@@ -150,5 +150,4 @@ for i in range(len(registration_data)):
     if i < len(registration_data)-1:
         driver.execute_script(f"window.open('about:blank', 'tab'+{i});")
         driver.switch_to.window(f"tab{i}")
-
 

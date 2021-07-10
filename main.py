@@ -15,6 +15,7 @@ def uploadImage(driver, data, imgName, id):
         imagePath = os.getcwd()
         if platform.system() == 'Windows':
             imagePath += '\\' + data['firstName'].strip() + '-' + data['pan'] + '\\' + data['firstName'].strip() + imgName
+            imagePath = imagePath.strip().replace(" ", "\\ ")
         else:
             imagePath += '/' + data['firstName'].strip() + '-' + data['pan'] + '/' + data['firstName'].strip() + imgName
         if os.path.exists(imagePath+'.jpeg'):
@@ -86,11 +87,13 @@ def fillPersonalDetails(driver, data):
         driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
         driver.find_element_by_id('txtPan').send_keys(data['pan'])
         driver.find_element_by_id('txtConfirmPan').send_keys(data['pan'])
-        uploadImage(driver, data, 'PP', 'imgUserPhoto')
-        uploadImage(driver, data, 'PAN', 'imgPAN')
-        uploadImage(driver, data, 'AADHAAR', 'imgPOA')
+        # uploadImage(driver, data, 'PP', 'imgUserPhoto')
+        # uploadImage(driver, data, 'PAN', 'imgPAN')
+        # uploadImage(driver, data, 'AADHAAR', 'imgPOA')
         driver.find_element_by_id('strAadhaarNumber').send_keys(data['aadhaar'])
         driver.find_element_by_id('txtLastName').send_keys(data['lastName'])
+        driver.execute_script('document.getElementById("txtDateOfBirth").removeAttribute("readonly")')
+        driver.find_element_by_id('txtDateOfBirth').send_keys('08/03/1997')
     except:
         pass
 

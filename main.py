@@ -93,7 +93,7 @@ def fillPersonalDetails(driver, data):
         driver.find_element_by_id('strAadhaarNumber').send_keys(data['aadhaar'])
         driver.find_element_by_id('txtLastName').send_keys(data['lastName'])
         driver.execute_script('document.getElementById("txtDateOfBirth").removeAttribute("readonly")')
-        driver.find_element_by_id('txtDateOfBirth').send_keys('08/03/1997')
+        driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
     except:
         pass
 

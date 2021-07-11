@@ -15,7 +15,6 @@ def uploadImage(driver, data, imgName, id):
         imagePath = os.getcwd()
         if platform.system() == 'Windows':
             imagePath += '\\' + data['firstName'].strip() + '-' + data['pan'] + '\\' + data['firstName'].strip() + imgName
-            imagePath = imagePath.strip().replace(" ", "\\ ")
         else:
             imagePath += '/' + data['firstName'].strip() + '-' + data['pan'] + '/' + data['firstName'].strip() + imgName
         if os.path.exists(imagePath+'.jpeg'):
@@ -39,9 +38,9 @@ def uploadImage(driver, data, imgName, id):
             action.release()
             action.perform()
             driver.find_element_by_id('btnCrop').click()
-            time.sleep(3)
-            driver.find_element_by_id('btnSubmit').click()
             time.sleep(4)
+            driver.find_element_by_id('btnSubmit').click()
+            time.sleep(5)
     except:
         pass
 

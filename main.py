@@ -87,13 +87,13 @@ def fillPersonalDetails(driver, data):
         driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
         driver.find_element_by_id('txtPan').send_keys(data['pan'])
         driver.find_element_by_id('txtConfirmPan').send_keys(data['pan'])
-        # uploadImage(driver, data, 'PP', 'imgUserPhoto')
-        # uploadImage(driver, data, 'PAN', 'imgPAN')
-        # uploadImage(driver, data, 'AADHAAR', 'imgPOA')
+        uploadImage(driver, data, 'PP', 'imgUserPhoto')
+        uploadImage(driver, data, 'PAN', 'imgPAN')
+        uploadImage(driver, data, 'AADHAAR', 'imgPOA')
         driver.find_element_by_id('strAadhaarNumber').send_keys(data['aadhaar'])
         driver.find_element_by_id('txtLastName').send_keys(data['lastName'])
         driver.execute_script('document.getElementById("txtDateOfBirth").removeAttribute("readonly")')
-        driver.find_element_by_id('txtDateOfBirth').send_keys('08/03/1997')
+        driver.find_element_by_id('txtDateOfBirth').send_keys(data['dob'])
     except:
         pass
 
@@ -104,6 +104,8 @@ def fillEducationDetails(driver, data):
             Select(driver.find_element_by_id('ddlQualification')).select_by_index(3)
             if 'commerce' in data['major'].lower():
                 Select(driver.find_element_by_id('ddlMajorSubject')).select_by_index(3)
+            elif 'b.sc' in data['major'].lower() or 'bsc' in data['major'].lower():
+                Select(driver.find_element_by_id('ddlMajorSubject')).select_by_index(2)
             elif 'engineer' in data['major'].lower() or 'engg' in data['major'].lower() or 'b.tech' in data['major'].lower() or 'b.e' in data['major'].lower():
                 Select(driver.find_element_by_id('ddlMajorSubject')).select_by_index(4)
             elif 'bba' in data['major'].lower() or 'mba' in data['major'].lower():
@@ -153,4 +155,3 @@ for i in range(len(registration_data)):
     if i < len(registration_data)-1:
         driver.execute_script(f"window.open('about:blank', 'tab'+{i});")
         driver.switch_to.window(f"tab{i}")
-
